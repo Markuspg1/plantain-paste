@@ -22,13 +22,14 @@ rep.size = NSSize(width: canvas, height: canvas)
 NSGraphicsContext.saveGraphicsState()
 NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: rep)
 
-// macOS-style squircle tile with a margin, indigo→purple gradient.
+// macOS-style squircle tile with a margin, plantain green→yellow gradient
+// (unripe to ripe — Powered by Plantain brand colors).
 let inset: CGFloat = 100
 let tile = NSRect(x: inset, y: inset, width: canvas - inset * 2, height: canvas - inset * 2)
 let tilePath = NSBezierPath(roundedRect: tile, xRadius: 185, yRadius: 185)
 NSGradient(
-    starting: NSColor(calibratedRed: 0.30, green: 0.44, blue: 0.98, alpha: 1),
-    ending: NSColor(calibratedRed: 0.52, green: 0.20, blue: 0.90, alpha: 1)
+    starting: NSColor(calibratedRed: 0.13, green: 0.48, blue: 0.24, alpha: 1),
+    ending: NSColor(calibratedRed: 0.99, green: 0.79, blue: 0.21, alpha: 1)
 )!.draw(in: tilePath, angle: -70)
 
 // White clipboard glyph, centered.

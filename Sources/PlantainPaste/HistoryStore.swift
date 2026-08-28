@@ -16,14 +16,16 @@ final class HistoryStore: ObservableObject {
 
     init() {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        baseDir = appSupport.appendingPathComponent("PBP", isDirectory: true)
+        baseDir = appSupport.appendingPathComponent("Plantain Paste", isDirectory: true)
         imagesDir = baseDir.appendingPathComponent("images", isDirectory: true)
         historyFile = baseDir.appendingPathComponent("history.json")
-        // One-time migration from the app's original name (ClipStack).
-        let legacyDir = appSupport.appendingPathComponent("ClipStack", isDirectory: true)
-        if !FileManager.default.fileExists(atPath: baseDir.path),
-           FileManager.default.fileExists(atPath: legacyDir.path) {
-            try? FileManager.default.moveItem(at: legacyDir, to: baseDir)
+        // One-time migration from the app's earlier names.
+        for legacyName in ["PBP", "ClipStack"] {
+            let legacyDir = appSupport.appendingPathComponent(legacyName, isDirectory: true)
+            if !FileManager.default.fileExists(atPath: baseDir.path),
+               FileManager.default.fileExists(atPath: legacyDir.path) {
+                try? FileManager.default.moveItem(at: legacyDir, to: baseDir)
+            }
         }
         try? FileManager.default.createDirectory(at: imagesDir, withIntermediateDirectories: true)
         load()

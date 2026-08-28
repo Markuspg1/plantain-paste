@@ -11,11 +11,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var launchAtLoginItem: NSMenuItem!
     private var accessibilityItem: NSMenuItem!
 
-    /// Darwin notifications for scripting: `notifyutil -p com.marco.pbp.toggle`
+    /// Darwin notifications for scripting: `notifyutil -p com.poweredbyplantain.paste.toggle`
     /// opens/closes the panel from the shell or tools like BetterTouchTool;
-    /// `com.marco.pbp.snapshot` writes a PNG of the open panel to /tmp/pbp-panel.png.
-    static let toggleNotification = "com.marco.pbp.toggle"
-    static let snapshotNotification = "com.marco.pbp.snapshot"
+    /// `com.poweredbyplantain.paste.snapshot` writes a PNG of the open panel
+    /// to /tmp/plantain-paste-panel.png.
+    static let toggleNotification = "com.poweredbyplantain.paste.toggle"
+    static let snapshotNotification = "com.poweredbyplantain.paste.snapshot"
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setUpStatusItem()
@@ -50,7 +51,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             guard let observer else { return }
             let delegate = Unmanaged<AppDelegate>.fromOpaque(observer).takeUnretainedValue()
             DispatchQueue.main.async {
-                delegate.panelController.snapshot(to: "/tmp/pbp-panel.png")
+                delegate.panelController.snapshot(to: "/tmp/plantain-paste-panel.png")
             }
         }, Self.snapshotNotification as CFString, nil, .deliverImmediately)
     }
@@ -62,7 +63,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if let button = statusItem.button {
             button.image = NSImage(
                 systemSymbolName: "doc.on.clipboard",
-                accessibilityDescription: "PBP"
+                accessibilityDescription: "Plantain Paste"
             )
         }
 
@@ -96,7 +97,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         menu.addItem(.separator())
 
-        let quitItem = NSMenuItem(title: "Quit PBP", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: "Quit Plantain Paste", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quitItem)
 
         statusItem.menu = menu
@@ -108,7 +109,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             launchAtLoginItem.state = SMAppService.mainApp.status == .enabled ? .on : .off
         } else {
             launchAtLoginItem.isEnabled = false
-            launchAtLoginItem.toolTip = "Run the built PBP.app to enable this"
+            launchAtLoginItem.toolTip = "Run the built Plantain Paste.app to enable this"
         }
         accessibilityItem.state = PasteService.hasAccessibilityAccess ? .on : .off
     }
@@ -142,7 +143,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if PasteService.hasAccessibilityAccess {
             showAlert(
                 title: "Auto-Paste is enabled",
-                message: "PBP has Accessibility access and will paste selected items directly into the frontmost app."
+                message: "Plantain Paste has Accessibility access and will paste selected items directly into the frontmost app."
             )
         } else {
             PasteService.requestAccessibilityAccess()

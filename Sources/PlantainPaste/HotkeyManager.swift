@@ -29,7 +29,7 @@ final class HotkeyManager {
             &handlerRef
         )
 
-        let hotKeyID = EventHotKeyID(signature: OSType(0x5042_5043), id: 1) // 'PBPC'
+        let hotKeyID = EventHotKeyID(signature: OSType(0x504C_5041), id: 1) // 'PLPA'
         RegisterEventHotKey(
             UInt32(kVK_ANSI_V),
             UInt32(cmdKey | shiftKey),

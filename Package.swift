@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "PBP",
+    name: "PlantainPaste",
     platforms: [
         .macOS(.v13)
     ],
     targets: [
         .executableTarget(
-            name: "PBP",
-            path: "Sources/PBP"
+            name: "PlantainPaste",
+            path: "Sources/PlantainPaste"
         )
     ]
 )

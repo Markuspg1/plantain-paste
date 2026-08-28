@@ -5,17 +5,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>PBP</string>
+	<string>PlantainPaste</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.marco.pbp-clipboard</string>
+	<string>com.poweredbyplantain.paste</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PBP</string>
+	<string>Plantain Paste</string>
 	<key>CFBundleDisplayName</key>
-	<string>PBP - Clipboard</string>
+	<string>Plantain Paste</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -29,6 +29,6 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Personal use build.</string>
+	<string>© Powered by Plantain. MIT licensed.</string>
 </dict>
 </plist>
