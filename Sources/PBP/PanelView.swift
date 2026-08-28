@@ -165,7 +165,7 @@ struct CardView: View {
                     .font(.system(size: 9))
                     .foregroundStyle(.orange)
             }
-            Text(Self.relativeFormatter.localizedString(for: item.createdAt, relativeTo: Date()))
+            Text(timeLabel)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }
@@ -240,6 +240,12 @@ struct CardView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
         .background(Color.primary.opacity(0.04))
+    }
+
+    private var timeLabel: String {
+        let age = Date().timeIntervalSince(item.createdAt)
+        guard age >= 60 else { return "now" }
+        return Self.relativeFormatter.localizedString(for: item.createdAt, relativeTo: Date())
     }
 
     private var footerLabel: String {

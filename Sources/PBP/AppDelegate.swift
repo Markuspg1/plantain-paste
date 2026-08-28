@@ -11,8 +11,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var launchAtLoginItem: NSMenuItem!
     private var accessibilityItem: NSMenuItem!
 
+    /// Darwin notifications for scripting: `notifyutil -p com.marco.pbp.toggle`
+    /// opens/closes the panel from the shell or tools like BetterTouchTool;
+    /// `com.marco.pbp.snapshot` writes a PNG of the open panel to /tmp/pbp-panel.png.
+    static let toggleNotification = "com.marco.pbp.toggle"
+    static let snapshotNotification = "com.marco.pbp.snapshot"
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         setUpStatusItem()
+        setUpScriptingNotifications()
 
         monitor.onCapture = { [weak self] content, app in
             self?.store.add(content, from: app)
@@ -29,6 +36,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         store.saveNow()
         hotkey.unregister()
         monitor.stop()
+    }
+
+    private func setUpScriptingNotifications() {
+        let center = CFNotificationCenterGetDarwinNotifyCenter()
+        let observer = Unmanaged.passUnretained(self).toOpaque()
+        CFNotificationCenterAddObserver(center, observer, { _, observer, _, _, _ in
+            guard let observer else { return }
+            let delegate = Unmanaged<AppDelegate>.fromOpaque(observer).takeUnretainedValue()
+            DispatchQueue.main.async { delegate.panelController.toggle() }
+        }, Self.toggleNotification as CFString, nil, .deliverImmediately)
+        CFNotificationCenterAddObserver(center, observer, { _, observer, _, _, _ in
+            guard let observer else { return }
+            let delegate = Unmanaged<AppDelegate>.fromOpaque(observer).takeUnretainedValue()
+            DispatchQueue.main.async {
+                delegate.panelController.snapshot(to: "/tmp/pbp-panel.png")
+            }
+        }, Self.snapshotNotification as CFString, nil, .deliverImmediately)
     }
 
     // MARK: - Status item

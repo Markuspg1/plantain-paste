@@ -82,6 +82,19 @@ final class PanelController: NSObject, NSWindowDelegate {
         hide()
     }
 
+    /// Captures the open panel's own window to a PNG (own-window capture
+    /// needs no Screen Recording permission). Used for README screenshots.
+    func snapshot(to path: String) {
+        guard let panel, panel.isVisible else { return }
+        let windowID = CGWindowID(panel.windowNumber)
+        guard let image = CGWindowListCreateImage(
+            .null, .optionIncludingWindow, windowID, [.boundsIgnoreFraming, .bestResolution]
+        ) else { return }
+        let rep = NSBitmapImageRep(cgImage: image)
+        guard let png = rep.representation(using: .png, properties: [:]) else { return }
+        try? png.write(to: URL(fileURLWithPath: path))
+    }
+
     // MARK: - Pasting
 
     private func paste(_ item: ClipboardItem) {
